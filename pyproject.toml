@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [project.scripts]
-parse-amex-points = "src.amex_point_pdf_parser.cli:main"
+parse-amex-points = "amex_point_pdf_parser.cli:main"
 
 [build-system]
 requires = ["hatchling"]

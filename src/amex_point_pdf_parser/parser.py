@@ -46,6 +46,7 @@ FOOD_DRINK_KEYWORDS = {
 
 TRANSACTION_STATUSES = {"Earned", "Adjusted", "Redeemed"}
 AMOUNT_PATTERN = re.compile(r"-?\$?\(?\d[\d,]*\.\d{2}\)?")
+FIVE_X_TOLERANCE = Decimal("1.0")
 
 
 @dataclass
@@ -59,8 +60,21 @@ class Transaction:
 
     @property
     def is_food_drink(self) -> bool:
+        return self.has_food_drink_keywords or self.has_five_x_multiplier
+
+    @property
+    def has_food_drink_keywords(self) -> bool:
         haystack = self.description.lower()
         return any(keyword in haystack for keyword in FOOD_DRINK_KEYWORDS)
+
+    @property
+    def has_five_x_multiplier(self) -> bool:
+        if self.status != "Earned" or self.amount is None or self.points is None:
+            return False
+        if self.amount <= 0 or self.points <= 0:
+            return False
+        expected_points = self.amount * Decimal("5")
+        return abs(expected_points - self.points) <= FIVE_X_TOLERANCE
 
 
 @dataclass
