@@ -1,0 +1,19 @@
+[project]
+name = "amex-point-pdf-parser"
+version = "0.1.0"
+description = "Parse American Express membership summary PDFs and total points/spend by category."
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "pdfplumber>=0.11.0",
+]
+
+[project.scripts]
+parse-amex-points = "src.amex_point_pdf_parser.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
